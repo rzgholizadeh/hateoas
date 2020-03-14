@@ -10,8 +10,11 @@ import javax.validation.Valid;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -83,6 +86,13 @@ public class CapabilityController {
 						.getCapability(capabilityToUpdate.getId())).withRel("getThisCapability"),
 				linkTo(methodOn(CapabilityController.class).getAllCapabilities())
 						.withRel("getAllCapability"));
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteCapability(@PathVariable Long id) {
+		capabilityService.deleteCapability(id);
+		return new ResponseEntity<String>("Capability Deleted", HttpStatus.OK);
 
 	}
+
 }
