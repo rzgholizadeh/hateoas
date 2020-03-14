@@ -6,8 +6,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,10 +57,16 @@ public class CapabilityController {
 	}
 
 	@PostMapping
-	public Object createCapability(@RequestBody Capability capability) {
+	public Object createCapability(@Valid @RequestBody Capability capability,
+			BindingResult result) {
+		if (result.hasErrors()) {
+			return capabilityService.errorMap(result);
+		}
 		Capability newCapability = capabilityService.saveCapability(capability);
 		return new EntityModel<>(newCapability,
-				linkTo(methodOn(CapabilityController.class).getCapability(newCapability.getId())).withRel("getThisCapability"),
-				linkTo(methodOn(CapabilityController.class).getAllCapabilities()).withRel("getAllCapability"));
+				linkTo(methodOn(CapabilityController.class).getCapability(newCapability.getId()))
+						.withRel("getThisCapability"),
+				linkTo(methodOn(CapabilityController.class).getAllCapabilities())
+						.withRel("getAllCapability"));
 	}
 }
