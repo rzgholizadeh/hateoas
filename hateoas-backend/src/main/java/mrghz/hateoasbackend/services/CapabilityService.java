@@ -23,6 +23,6 @@ public class CapabilityService {
 
 	public Capability findCapabilityById(Long id) {
 		return capabilityRepository.findById(id).orElseThrow(
-				() -> new CapabilityException("Capability with ID:" + id + " Not found"));
+				() -> new CapabilityException("Capability with ID: " + id + " Not found"));
 	}
 }
