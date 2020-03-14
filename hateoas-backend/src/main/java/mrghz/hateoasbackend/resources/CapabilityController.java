@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -68,5 +69,20 @@ public class CapabilityController {
 						.withRel("getThisCapability"),
 				linkTo(methodOn(CapabilityController.class).getAllCapabilities())
 						.withRel("getAllCapability"));
+	}
+
+	@PutMapping("/{id}")
+	public Object updateCapability(@PathVariable Long id, @Valid @RequestBody Capability capability,
+			BindingResult result) {
+		if (result.hasErrors()) {
+			return capabilityService.errorMap(result);
+		}
+		Capability capabilityToUpdate = capabilityService.updateCapability(id, capability);
+		return new EntityModel<>(capabilityToUpdate,
+				linkTo(methodOn(CapabilityController.class)
+						.getCapability(capabilityToUpdate.getId())).withRel("getThisCapability"),
+				linkTo(methodOn(CapabilityController.class).getAllCapabilities())
+						.withRel("getAllCapability"));
+
 	}
 }
