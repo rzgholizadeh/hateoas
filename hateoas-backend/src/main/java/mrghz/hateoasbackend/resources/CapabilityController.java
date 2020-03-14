@@ -11,6 +11,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,6 +48,16 @@ public class CapabilityController {
 		Capability capability = capabilityService.findCapabilityById(id);
 		return new EntityModel<>(capability,
 				linkTo(methodOn(CapabilityController.class).getCapability(id))
-						.withRel("getThisCapability"));
+						.withRel("getThisCapability"),
+				linkTo(methodOn(CapabilityController.class).getAllCapabilities())
+						.withRel("getAllCapability"));
+	}
+
+	@PostMapping
+	public Object createCapability(@RequestBody Capability capability) {
+		Capability newCapability = capabilityService.saveCapability(capability);
+		return new EntityModel<>(newCapability,
+				linkTo(methodOn(CapabilityController.class).getCapability(newCapability.getId())).withRel("getThisCapability"),
+				linkTo(methodOn(CapabilityController.class).getAllCapabilities()).withRel("getAllCapability"));
 	}
 }

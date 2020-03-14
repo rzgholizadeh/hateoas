@@ -25,4 +25,8 @@ public class CapabilityService {
 		return capabilityRepository.findById(id).orElseThrow(
 				() -> new CapabilityException("Capability with ID: " + id + " Not found"));
 	}
+
+	public Capability saveCapability(Capability capability) {
+		return capabilityRepository.save(capability);
+	}
 }
