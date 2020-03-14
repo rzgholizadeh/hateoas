@@ -27,8 +27,7 @@ public class CapabilityService {
 	}
 
 	public Capability findCapabilityById(Long id) {
-		return capabilityRepository.findById(id).orElseThrow(
-				() -> new CapabilityException("Capability with ID: " + id + " Not found"));
+		return capabilityRepository.findById(id).orElseThrow(() -> new CapabilityException("Capability with ID: " + id + " Not found"));
 	}
 
 	public Capability saveCapability(Capability capability) {
@@ -55,7 +54,7 @@ public class CapabilityService {
 	}
 
 	public void deleteCapability(Long id) {
-		capabilityRepository.delete(capabilityRepository.findById(id).orElseThrow(
-				() -> new CapabilityException("Capability with ID: " + id + " Not found")));
+		capabilityRepository.delete(
+				capabilityRepository.findById(id).orElseThrow(() -> new CapabilityException("Capability with ID: " + id + " Not found")));
 	}
 }
